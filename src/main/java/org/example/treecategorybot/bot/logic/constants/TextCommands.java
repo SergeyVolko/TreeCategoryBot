@@ -10,5 +10,5 @@ public class TextCommands {
     public static final String UPLOAD = "/upload";
     public static final String DEFAULT_TEXT = "text";
     public static final String DEFAULT_DOCUMENT = "document";
-    public static final String EXIT_DOWNLOAD = "/exit_download";
+    public static final String EXIT_UPLOAD = "/exit_upload";
 }

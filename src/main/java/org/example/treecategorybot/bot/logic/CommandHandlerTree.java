@@ -2,10 +2,16 @@ package org.example.treecategorybot.bot.logic;
 
 import org.example.treecategorybot.bot.logic.commandsTree.AbstractCommand;
 import org.springframework.stereotype.Component;
+import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
+import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
+import org.telegram.telegrambots.meta.api.methods.send.SendMediaBotMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+
+import java.io.Serializable;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -28,18 +34,19 @@ public class CommandHandlerTree {
         commandHistory.add(commandMap.get(START));
     }
 
-    public SendMessage executeCommand(Update update) throws TelegramApiException {
+    public void  executeCommand(Update update, TelegramLongPollingBot bot) throws TelegramApiException {
         AbstractCommand command = getCommand(update);
         String chatId = update.getMessage().getChatId().toString();
         Message message = update.getMessage();
         if (command == null) {
-            return new SendMessage(chatId, "Введены не правильные данные");
+            bot.execute(new SendMessage(chatId, "Введена не правильная команда"));
+            return;
         }
         commandHistory.addLast(command);
         if (commandHistory.size() == HISTORY_CAPACITY) {
             commandHistory.removeFirst();
         }
-        return command.execute(chatId, message);
+        command.execute(chatId, message, bot);
     }
 
     private String trimToFirstSpace(String input) {
@@ -53,7 +60,7 @@ public class CommandHandlerTree {
         return input.substring(0, spaceIndex);
     }
 
-    private AbstractCommand getCommand(Update update) {
+    public AbstractCommand getCommand(Update update) {
         AbstractCommand command = null;
         Message message = update.getMessage();
         Set<String> commandsText = commandHistory.getLast().getChildCommands();

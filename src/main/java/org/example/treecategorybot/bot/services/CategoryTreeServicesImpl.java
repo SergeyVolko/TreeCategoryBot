@@ -67,6 +67,16 @@ public class CategoryTreeServicesImpl implements CategoriesTreeService {
 
     }
 
+    @Override
+    public List<Category> getAllCategories() {
+        return categoryRepository.findAll();
+    }
+
+    @Override
+    public void saveAll(List<Category> categories) {
+        categoryRepository.saveAll(categories);
+    }
+
     private void recurseTree(List<Category> categories, int level, StringBuilder builder) {
         for (Category category : categories) {
             if (category.getParent() != null) {
@@ -81,7 +91,7 @@ public class CategoryTreeServicesImpl implements CategoriesTreeService {
         }
     }
 
-    private List<Category> getTreeCategories(List<Category> categories) {
+    public List<Category> getTreeCategories(List<Category> categories) {
         return categories.stream()
                 .peek(category -> {
                     category.setChildren(new ArrayList<>());

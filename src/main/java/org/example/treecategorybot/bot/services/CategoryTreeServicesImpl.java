@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class CategoryTreeServicesImpl implements CategoriesTreeService {
@@ -77,6 +78,11 @@ public class CategoryTreeServicesImpl implements CategoriesTreeService {
         categoryRepository.saveAll(categories);
     }
 
+    @Override
+    public void removeAll() {
+        categoryRepository.deleteAll();
+    }
+
     private void recurseTree(List<Category> categories, int level, StringBuilder builder) {
         for (Category category : categories) {
             if (category.getParent() != null) {
@@ -102,5 +108,4 @@ public class CategoryTreeServicesImpl implements CategoriesTreeService {
                 }).filter(category -> category.getParent() == null)
                 .toList();
     }
-
 }

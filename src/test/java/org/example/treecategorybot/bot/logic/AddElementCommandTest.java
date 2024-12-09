@@ -100,9 +100,8 @@ class AddElementCommandTest {
     }
 
     @Test
-    @Transactional
     public  void whenDeleteCategory() {
-
+        categoryRepository.deleteAll();
     }
 
     List<Category> getTreeCategories(List<Category> categories) {

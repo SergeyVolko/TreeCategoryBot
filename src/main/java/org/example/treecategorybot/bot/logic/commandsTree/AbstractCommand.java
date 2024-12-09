@@ -17,7 +17,8 @@ public abstract class AbstractCommand implements Command {
             REMOVE_ELEMENT,
             DOWNLOAD,
             UPLOAD,
-            HELP
+            HELP,
+            REMOVE_All
     );
 
     public AbstractCommand(String nameCommand) {

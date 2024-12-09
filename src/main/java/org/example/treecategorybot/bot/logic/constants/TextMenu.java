@@ -18,7 +18,8 @@ public class TextMenu {
             %s - вызов текущего руководства ботом
             %s - скачать документ excel с деревом категорий
             %s - загрузить категории в базу через excel документ
-            """, VIEW_TREE, ADD_ELEMENT, ADD_ELEMENT, REMOVE_ELEMENT, HELP, DOWNLOAD, UPLOAD);
+            %s - очистить дерево категорий
+            """, VIEW_TREE, ADD_ELEMENT, ADD_ELEMENT, REMOVE_ELEMENT, HELP, DOWNLOAD, UPLOAD, REMOVE_All);
 
     public static final String TEXT_ADD_ELEMENT_MENU = String.format("""
                     Введенные данные не соответствуют шаблону:

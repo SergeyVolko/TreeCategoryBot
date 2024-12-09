@@ -48,9 +48,27 @@ class CategoryTreeServicesImplTest {
         Category categoryAC = new Category("cccc", categoryA);
         Category categoryAD = new Category("dddd", categoryA);
         Category categoryDE = new Category("eeee", categoryAD);
+        Category categoryDG = new Category("gggg", categoryAD);
         Category categoryBF = new Category("ffff", categoryB);
-        List<Category> categories = List.of(categoryA, categoryB, categoryAC, categoryAD, categoryDE, categoryBF);
-        List<Category> treeCategories = buildTree(categories);
+        categoryA.setChildren(new ArrayList<>());
+        categoryA.getChildren().add(categoryAC);
+        categoryA.getChildren().add(categoryAD);
+        categoryB.setChildren(new ArrayList<>());
+        categoryB.getChildren().add(categoryBF);
+        categoryAD.setChildren(new ArrayList<>());
+        categoryAD.getChildren().add(categoryDE);
+        categoryAD.getChildren().add(categoryDG);
+
+        /*Category categoryA = new Category("aaaa");
+        Category categoryB = new Category("bbbb");
+        Category categoryAC = new Category("cccc", new Category("aaaa"));
+        Category categoryAD = new Category("dddd", new Category("aaaa"));
+        Category categoryDE = new Category("eeee", new Category("dddd", new Category("aaaa")));
+        Category categoryDG = new Category("gggg", new Category("dddd", new Category("aaaa")));
+        Category categoryBF = new Category("ffff", new Category("bbbb"));*/
+        //List<Category> categories = List.of(categoryBF, categoryDG, categoryB, categoryAC, categoryA, categoryAD, categoryDE);
+        List<Category> categories = List.of(categoryA, categoryB);
+
     }
 
     public List<Category> buildTree(List<Category> categories) {

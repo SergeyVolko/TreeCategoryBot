@@ -41,13 +41,14 @@ public class CommandDefaultDocument extends AbstractCommand {
                     bot.execute(new SendMessage(chatId,
                             "Данные с файла не считались. Проверьте правильность документа."));
                 } else {
-                    List<Category> treeCategory = categoryTreeServices.getTreeCategories(categories);
-                    categoryTreeServices.saveAll(treeCategory);
+                    categoryTreeServices.saveAll(categories);
                     bot.execute(new SendMessage(chatId, "Документ успешно загружен."));
                 }
 
             } catch (Exception e) {
-                SendMessage sendMessage = new SendMessage(chatId, e.getMessage());
+                SendMessage sendMessage = new SendMessage(chatId, "Ошибка добавления категорий. " +
+                        "Проверьте правильность заполнения передаваемого документа. " +
+                        "Возможно некоторые категории уже добавлены");
                 bot.execute(sendMessage);
             }
         }

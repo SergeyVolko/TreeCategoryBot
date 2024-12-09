@@ -12,4 +12,5 @@ public interface CategoriesTreeService {
     void getHelp();
     List<Category> getAllCategories();
     void saveAll(List<Category> categories);
+    void removeAll();
 }

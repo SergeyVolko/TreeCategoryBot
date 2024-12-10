@@ -25,86 +25,18 @@ import static org.example.treecategorybot.bot.logic.constants.TitleHeaders.HEADE
 public class FileHandler {
 
     private final GenerateInputStreamBot generateInputStreamBot;
+    private final ConverterDtoCategoryImp converter;
+    private final ExcelReaderServiceImpl excelReaderService;
 
-    public FileHandler(GenerateInputStreamBot generateInputStreamBot) {
+    public FileHandler(GenerateInputStreamBot generateInputStreamBot, ConverterDtoCategoryImp converter, ExcelReaderServiceImpl excelReaderService) {
         this.generateInputStreamBot = generateInputStreamBot;
-    }
-
-    private List<CategoryDTO> readExcelFile(InputStream inputStream) throws IOException, DownloadDocumentException {
-        List<CategoryDTO> categories = new ArrayList<>();
-        Set<String> categoriesName = new HashSet<>();
-        try (Workbook workbook = new XSSFWorkbook(inputStream)) {
-            Sheet sheet = workbook.getSheetAt(0);
-            Iterator<Row> rowIterator = sheet.iterator();
-            if (rowIterator.hasNext()) {
-                Row row = rowIterator.next();
-                Cell categoryTitleNameCell = row.getCell(0);
-                Cell categoryTitleParentCell = row.getCell(1);
-                if (categoryTitleNameCell == null || categoryTitleParentCell == null) {
-                    throw new DownloadDocumentException(EMPTY_VALUE_IN_CELL_TITLE_MESSAGE);
-                }
-                String categoryTitleName = row.getCell(0).getStringCellValue().trim();
-                String categoryTitleParent = row.getCell(1).getStringCellValue().trim();
-                if (!HEADER_CATEGORY.equals(categoryTitleName)
-                        || !HEADER_PARENT_CATEGORY.equals(categoryTitleParent)) {
-                    throw new DownloadDocumentException(HEADER_EXCEPTION_MESSAGE);
-                }
-            }
-            while (rowIterator.hasNext()) {
-                Row row = rowIterator.next();
-                Cell cellCategory = row.getCell(0);
-                if (cellCategory == null) {
-                    throw new DownloadDocumentException(EMPTY_VALUE_IN_CELL_MESSAGE);
-                }
-                String categoryName = row.getCell(0).getStringCellValue().trim();
-                if (categoriesName.contains(categoryName)) {
-                    throw new DownloadDocumentException(REPEAT_EXCEPTION_MESSAGE);
-                }
-                Cell cellParent = row.getCell(1);
-                String parent = null;
-                if (cellParent != null) {
-                    parent = row.getCell(1).getStringCellValue().trim();
-                }
-                if (parent != null && !categoriesName.contains(parent)) {
-                    throw new DownloadDocumentException(PARENT_EXCEPTION_MESSAGE);
-                }
-                categoriesName.add(categoryName);
-                if (parent == null) {
-                    categories.add(new CategoryDTO(categoryName, null));
-                } else {
-                    categories.add(new CategoryDTO(categoryName, parent));
-                }
-            }
-        }
-        return categories;
+        this.converter = converter;
+        this.excelReaderService = excelReaderService;
     }
 
     public  List<Category> getCategoriesFromExcel(String fileId, TelegramLongPollingBot bot)
             throws IOException, TelegramApiException, DownloadDocumentException {
         InputStream inputStream = generateInputStreamBot.getInputStream(fileId);
-        return convertDtoToCategory(readExcelFile(inputStream));
-    }
-
-    private List<Category> convertDtoToCategory(List<CategoryDTO> categoryDTOS) {
-        Map<String, Category> categoryListMap = new HashMap<>();
-        List<Category> roots = new ArrayList<>();
-        for (CategoryDTO categoryDTO : categoryDTOS) {
-            String name = categoryDTO.name();
-            String parentName = categoryDTO.parent();
-            Category category = categoryListMap.computeIfAbsent(name, n -> new Category(n, null));
-            if (parentName == null) {
-                roots.add(category);
-            } else {
-                Category parentCategory = categoryListMap
-                        .computeIfAbsent(parentName, n -> new Category(parentName, null));
-
-                if (parentCategory.getChildren() == null) {
-                    parentCategory.setChildren(new ArrayList<>());
-                }
-                parentCategory.getChildren().add(category);
-                category.setParent(parentCategory);
-            }
-        }
-        return roots;
+        return converter.convertDtoToCategory(excelReaderService.readExcelFile(inputStream));
     }
 }

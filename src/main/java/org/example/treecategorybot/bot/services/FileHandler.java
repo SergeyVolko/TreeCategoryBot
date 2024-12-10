@@ -7,7 +7,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.example.treecategorybot.bot.dto.CategoryDTO;
 import org.example.treecategorybot.bot.entities.Category;
-import org.example.treecategorybot.bot.logic.commandsTree.AbstractCommand;
+import org.example.treecategorybot.bot.logic.exceptions.DownloadDocumentException;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.GetFile;
@@ -17,69 +17,71 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.*;
+import static org.example.treecategorybot.bot.logic.constants.ExceptionsTextMessages.*;
 import static org.example.treecategorybot.bot.logic.constants.TitleHeaders.HEADER_CATEGORY;
 import static org.example.treecategorybot.bot.logic.constants.TitleHeaders.HEADER_PARENT_CATEGORY;
 
 @Component
 public class FileHandler {
 
-    private  InputStream getFileInputStream(String fileId, TelegramLongPollingBot bot) throws TelegramApiException,
-            IOException {
-        GetFile getFile = new GetFile();
-        getFile.setFileId(fileId);
-        File file = bot.execute(getFile);
-        String filePath = file.getFilePath();
-        return new URL("https://api.telegram.org/file/bot" + bot.getBotToken() + "/" + filePath).openStream();
+    private final GenerateInputStreamBot generateInputStreamBot;
+
+    public FileHandler(GenerateInputStreamBot generateInputStreamBot) {
+        this.generateInputStreamBot = generateInputStreamBot;
     }
 
-    private List<CategoryDTO> readExcelFile(InputStream inputStream) {
+    private List<CategoryDTO> readExcelFile(InputStream inputStream) throws IOException, DownloadDocumentException {
         List<CategoryDTO> categories = new ArrayList<>();
-        Set<String> parents = new HashSet<>();
         Set<String> categoriesName = new HashSet<>();
-        parents.add(null);
         try (Workbook workbook = new XSSFWorkbook(inputStream)) {
             Sheet sheet = workbook.getSheetAt(0);
             Iterator<Row> rowIterator = sheet.iterator();
             if (rowIterator.hasNext()) {
                 Row row = rowIterator.next();
+                Cell categoryTitleNameCell = row.getCell(0);
+                Cell categoryTitleParentCell = row.getCell(1);
+                if (categoryTitleNameCell == null || categoryTitleParentCell == null) {
+                    throw new DownloadDocumentException(EMPTY_VALUE_IN_CELL_TITLE_MESSAGE);
+                }
                 String categoryTitleName = row.getCell(0).getStringCellValue().trim();
                 String categoryTitleParent = row.getCell(1).getStringCellValue().trim();
                 if (!HEADER_CATEGORY.equals(categoryTitleName)
                         || !HEADER_PARENT_CATEGORY.equals(categoryTitleParent)) {
-                    return Collections.emptyList();
+                    throw new DownloadDocumentException(HEADER_EXCEPTION_MESSAGE);
                 }
             }
             while (rowIterator.hasNext()) {
                 Row row = rowIterator.next();
+                Cell cellCategory = row.getCell(0);
+                if (cellCategory == null) {
+                    throw new DownloadDocumentException(EMPTY_VALUE_IN_CELL_MESSAGE);
+                }
                 String categoryName = row.getCell(0).getStringCellValue().trim();
                 if (categoriesName.contains(categoryName)) {
-                    return Collections.emptyList();
+                    throw new DownloadDocumentException(REPEAT_EXCEPTION_MESSAGE);
                 }
-                Cell cell = row.getCell(1);
+                Cell cellParent = row.getCell(1);
                 String parent = null;
-                if (cell != null) {
+                if (cellParent != null) {
                     parent = row.getCell(1).getStringCellValue().trim();
                 }
-                if (!parents.contains(parent)) {
-                    return Collections.emptyList();
+                if (parent != null && !categoriesName.contains(parent)) {
+                    throw new DownloadDocumentException(PARENT_EXCEPTION_MESSAGE);
                 }
                 categoriesName.add(categoryName);
-                parents.add(categoryName);
                 if (parent == null) {
                     categories.add(new CategoryDTO(categoryName, null));
                 } else {
                     categories.add(new CategoryDTO(categoryName, parent));
                 }
             }
-        } catch (Exception e) {
-            return Collections.emptyList();
         }
         return categories;
     }
 
     public  List<Category> getCategoriesFromExcel(String fileId, TelegramLongPollingBot bot)
-            throws IOException, TelegramApiException {
-        InputStream inputStream = getFileInputStream(fileId, bot);
+            throws IOException, TelegramApiException, DownloadDocumentException {
+        InputStream inputStream = generateInputStreamBot.getInputStream(fileId);
         return convertDtoToCategory(readExcelFile(inputStream));
     }
 

@@ -4,6 +4,7 @@ import org.example.treecategorybot.bot.entities.Category;
 import org.example.treecategorybot.bot.repository.CategoryRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
@@ -26,7 +27,9 @@ class CategoryTreeServicesImplTest {
 
     @Test
     void whenAddElement() {
-
+        String nameCategory = "Фрукты";
+        categoryTreeServicesImpl.addElement(nameCategory);
+        System.out.println(categoryTreeServicesImpl.viewTree());
     }
 
     @Test

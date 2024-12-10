@@ -1,6 +1,7 @@
 package org.example.treecategorybot.bot.logic.commandsTree;
 
 import org.example.treecategorybot.bot.entities.Category;
+import org.example.treecategorybot.bot.logic.exceptions.DownloadDocumentException;
 import org.example.treecategorybot.bot.services.CategoryTreeServicesImpl;
 import org.example.treecategorybot.bot.services.ExcelGenerator;
 import org.example.treecategorybot.bot.services.FileHandler;
@@ -19,6 +20,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import static org.example.treecategorybot.bot.logic.constants.TextCommands.DEFAULT_DOCUMENT;
+import static org.example.treecategorybot.bot.logic.constants.TextCommands.UPLOAD;
 
 @Component
 public class CommandDefaultDocument extends AbstractCommand {
@@ -37,18 +39,17 @@ public class CommandDefaultDocument extends AbstractCommand {
             String fileId = message.getDocument().getFileId();
             try {
                 List<Category> categories = fileHandler.getCategoriesFromExcel(fileId, bot);
-                if (categories.isEmpty()) {
-                    bot.execute(new SendMessage(chatId,
-                            "Данные с файла не считались. Проверьте правильность документа."));
-                } else {
-                    categoryTreeServices.saveAll(categories);
-                    bot.execute(new SendMessage(chatId, "Документ успешно загружен."));
-                }
+                categoryTreeServices.saveAll(categories);
+                bot.execute(new SendMessage(chatId, "Документ успешно загружен."));
 
+            } catch (DownloadDocumentException e) {
+                SendMessage sendMessage = new SendMessage(chatId, e.getMessage());
+                bot.execute(sendMessage);
             } catch (Exception e) {
                 SendMessage sendMessage = new SendMessage(chatId, "Ошибка добавления категорий. " +
                         "Проверьте правильность заполнения передаваемого документа. " +
-                        "Возможно некоторые категории уже добавлены");
+                        "Возможно некоторые категории уже добавлены. Выберете команду " + UPLOAD
+                        + " для повторной загрузки.");
                 bot.execute(sendMessage);
             }
         }

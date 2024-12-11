@@ -1,0 +1,11 @@
+org.example.treecategorybot
+org.example.treecategorybot.bot
+org.example.treecategorybot.bot.dto
+org.example.treecategorybot.bot.entities
+org.example.treecategorybot.bot.logic
+org.example.treecategorybot.bot.logic.commandsTree
+org.example.treecategorybot.bot.logic.constants
+org.example.treecategorybot.bot.logic.exceptions
+org.example.treecategorybot.bot.repository
+org.example.treecategorybot.bot.services
+org.example.treecategorybot.configuration

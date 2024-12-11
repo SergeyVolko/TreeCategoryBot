@@ -21,7 +21,7 @@ public class CategoryTreeServicesImpl implements CategoriesTreeService {
 
     @Override
     public String viewTree() {
-        List<Category> categoriesFromDB = categoryRepository.findAll();
+        List<Category> categoriesFromDB = getAllCategories();
         if (categoriesFromDB.isEmpty()) {
             return "Дерево категорий пустое.";
         }
@@ -39,6 +39,7 @@ public class CategoryTreeServicesImpl implements CategoriesTreeService {
         return categoryRepository.save(new Category(nameCategory));
     }
 
+    @Transactional
     @Override
     public Category addElementToParent(String parentNameCategory, String nameCategory) {
         Category parentCategory = categoryRepository.findCategoryByName(parentNameCategory);
@@ -46,7 +47,10 @@ public class CategoryTreeServicesImpl implements CategoriesTreeService {
         if (parentCategory == null || category != null) {
             return null;
         }
-        return categoryRepository.save(new Category(nameCategory, parentCategory));
+        Category addedCategory = new Category(nameCategory, parentCategory);
+        parentCategory.getChildren().add(addedCategory);
+
+        return categoryRepository.save(addedCategory);
     }
 
     @Override
@@ -97,7 +101,7 @@ public class CategoryTreeServicesImpl implements CategoriesTreeService {
         }
     }
 
-    public List<Category> getTreeCategories(List<Category> categories) {
+    private List<Category> getTreeCategories(List<Category> categories) {
         return categories.stream()
                 .peek(category -> {
                     category.setChildren(new ArrayList<>());

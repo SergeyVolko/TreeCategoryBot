@@ -15,11 +15,7 @@ import org.telegram.telegrambots.meta.api.objects.File;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.util.*;
-import static org.example.treecategorybot.bot.logic.constants.ExceptionsTextMessages.*;
-import static org.example.treecategorybot.bot.logic.constants.TitleHeaders.HEADER_CATEGORY;
-import static org.example.treecategorybot.bot.logic.constants.TitleHeaders.HEADER_PARENT_CATEGORY;
 
 @Component
 public class FileHandler {
@@ -34,7 +30,7 @@ public class FileHandler {
         this.excelReaderService = excelReaderService;
     }
 
-    public  List<Category> getCategoriesFromExcel(String fileId, TelegramLongPollingBot bot)
+    public  List<Category> getCategoriesFromExcel(String fileId)
             throws IOException, TelegramApiException, DownloadDocumentException {
         InputStream inputStream = generateInputStreamBot.getInputStream(fileId);
         return converter.convertDtoToCategory(excelReaderService.readExcelFile(inputStream));

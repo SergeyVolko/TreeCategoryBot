@@ -38,7 +38,7 @@ public class CommandDefaultDocument extends AbstractCommand {
         if (message.hasDocument()) {
             String fileId = message.getDocument().getFileId();
             try {
-                List<Category> categories = fileHandler.getCategoriesFromExcel(fileId, bot);
+                List<Category> categories = fileHandler.getCategoriesFromExcel(fileId);
                 categoryTreeServices.saveAll(categories);
                 bot.execute(new SendMessage(chatId, "Документ успешно загружен."));
 

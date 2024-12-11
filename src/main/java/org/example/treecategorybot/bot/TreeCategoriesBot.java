@@ -9,7 +9,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 /**
  * Класс, представляющий бота TreeCategoriesBot, который наследуется от {@link TelegramLongPollingBot}.
- *
+ * <p>
  * Этот бот отвечает за обработку обновлений, полученных от Telegram, и взаимодействие с пользователями.
  * Он использует {@link CommandHandlerTree} для выполнения команд, отправленных пользователями.
  *
@@ -36,7 +36,7 @@ public class TreeCategoriesBot extends TelegramLongPollingBot {
 
     /**
      * Обрабатывает полученные обновления от Telegram.
-     *
+     * <p>
      * Этот метод вызывается, когда бот получает новое обновление, такое как сообщение от пользователя.
      * Он передает обновление в {@link CommandHandlerTree} для обработки команды, связанной с обновлением.
      * Если возникает ошибка при выполнении команды, выбрасывается исключение {@link RuntimeException}.
@@ -59,7 +59,7 @@ public class TreeCategoriesBot extends TelegramLongPollingBot {
 
     /**
      * Возвращает имя бота, используемое для его идентификации в Telegram.
-     *
+     * <p>
      * Этот метод возвращает строку, представляющую имя бота, которое будет
      * отображаться в Telegram и использоваться для взаимодействия с пользователями.
      * Имя бота должно быть уникальным в пределах платформы Telegram.

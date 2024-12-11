@@ -15,5 +15,11 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Long> {
+    /**
+     * Находит категорию по имени.
+     *
+     * @param name имя категории, которую необходимо найти.
+     * @return найденная категория или null, если категория не существует.
+     */
     Category findCategoryByName(String name);
 }

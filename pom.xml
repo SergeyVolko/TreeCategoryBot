@@ -41,7 +41,7 @@
         <dependency>
             <groupId>org.telegram</groupId>
             <artifactId>telegrambots-spring-boot-starter</artifactId>
-            <version>6.5.0</version> <!-- Проверьте наличие последней версии -->
+            <version>6.9.7.1</version> <!-- Проверьте наличие последней версии -->
         </dependency>
         <dependency>
             <groupId>org.postgresql</groupId>
@@ -55,17 +55,17 @@
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi</artifactId>
-            <version>5.2.3</version>
+            <version>5.3.0</version>
         </dependency>
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml</artifactId>
-            <version>5.2.3</version>
+            <version>5.3.0</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-collections4</artifactId>
-            <version>4.4</version>
+            <version>4.5.0-M2</version>
         </dependency>
         <dependency>
             <groupId>com.h2database</groupId>
@@ -85,7 +85,7 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>4.0.0</version>
+            <version>5.14.2</version>
             <scope>test</scope>
         </dependency>
 
@@ -104,6 +104,24 @@
                         </exclude>
                     </excludes>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.3.0</version> <!-- Убедитесь, что версия актуальна -->
+                <configuration>
+                    <failOnError>true</failOnError>
+                    <links>
+                        <link>https://docs.oracle.com/javase/8/docs/api/</link> <!-- Пример ссылки на API Java -->
+                    </links>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

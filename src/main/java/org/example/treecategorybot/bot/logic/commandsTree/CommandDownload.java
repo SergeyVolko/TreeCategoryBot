@@ -40,9 +40,10 @@ public class CommandDownload extends AbstractCommand {
      *
      * <p>
      * Инициализирует новый объект {@link CommandDownload} с заданным генератором Excel.
-     *
-     * @param excelGenerator Генератор Excel-документов, который будет использоваться для создания Excel-файлов с категориями.
      * </p>
+     *
+     * @param excelGenerator Генератор Excel-документов, который будет использоваться для
+     *                       создания Excel-файлов с категориями.
      */
     public CommandDownload(ExcelGenerator excelGenerator) {
         super(DOWNLOAD);

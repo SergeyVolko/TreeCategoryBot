@@ -68,6 +68,7 @@ public class CommandUpload extends AbstractCommand{
      * <p>
      * Этот метод отправляет пользователю сообщение с текстом {@link TextMenu#TEXT_UPLOAD_DOCUMENT}
      * в формате HTML, информируя его о необходимости загрузить документ.
+     * </p>
      *
      * @param chatId Идентификатор чата, в который будет отправлено сообщение.
      * @param message Сообщение, которое вызвало выполнение этой команды.
@@ -77,7 +78,6 @@ public class CommandUpload extends AbstractCommand{
      *            отправки сообщения пользователю.
      * @throws TelegramApiException Если происходит ошибка при отправке сообщения
      *                               через Telegram API.
-     * </p>
      */
     @Override
     public void execute(String chatId, Message message, TelegramLongPollingBot bot) throws TelegramApiException {

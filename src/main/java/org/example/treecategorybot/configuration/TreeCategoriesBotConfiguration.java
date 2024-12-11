@@ -9,7 +9,7 @@ import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
 /**
  * Конфигурационный класс для настройки бота TreeCategoriesBot.
- *
+ * <p>
  * Этот класс отвечает за создание и конфигурацию необходимых бинов для работы с
  * Telegram Bot API. Он использует аннотацию {@link Configuration} для обозначения
  * класса как источника конфигурации Spring, а также предоставляет метод для

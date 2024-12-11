@@ -2,12 +2,28 @@ package org.example.treecategorybot.bot.logic.constants;
 
 import static org.example.treecategorybot.bot.logic.constants.TextCommands.*;
 
+/**
+ * Класс, содержащий текстовые сообщения для меню бота.
+ *
+ * <p>
+ * Этот класс предоставляет статические строки, которые используются для отображения
+ * различных текстовых меню и инструкций пользователям бота. Каждое сообщение
+ * формируется с использованием команд, определенных в классе {@link TextCommands}.
+ * </p>
+ */
 public class TextMenu {
 
+    /**
+     * Текст приветственного меню, которое отображается при запуске бота.
+     */
     public static final String TEXT_START_MENU = String.format("""
             Добро пожаловать в бот управляющим иерархическим деревом категорий.
             Введите команду %s для просмотра возможностей бота.
             """, HELP);
+
+    /**
+     * Текст меню помощи, содержащий основные команды управления ботом.
+     */
     public static final String TEXT_HELP_MENU = String.format(
             """
             Эта инструкция предоставляет основные команды управления ботом:
@@ -21,17 +37,26 @@ public class TextMenu {
             %s - очистить дерево категорий
             """, VIEW_TREE, ADD_ELEMENT, ADD_ELEMENT, REMOVE_ELEMENT, HELP, DOWNLOAD, UPLOAD, REMOVE_All);
 
+    /**
+     * Текст меню для добавления элемента, с указанием шаблонов ввода.
+     */
     public static final String TEXT_ADD_ELEMENT_MENU = String.format("""
                     Введенные данные не соответствуют шаблону:
                     %s <название элемента> - шаблон для добавления корневого элемента
                     %s <родительский элемент> <дочерний элемент> - шаблон добавления дочернего элемента
                     """, ADD_ELEMENT, ADD_ELEMENT);
 
+    /**
+     * Текст меню для удаления элемента, с указанием шаблона ввода.
+     */
     public static final String TEXT_REMOVE_ELEMENT_MENU = String.format("""
              Введенные данные не соответствуют шаблону:
              %s <название элемента> - шаблон для удаления элемента
             """, REMOVE_ELEMENT);
 
+    /**
+     * Текст, описывающий процесс загрузки документа, включая шаблон и правила.
+     */
     public static final String TEXT_UPLOAD_DOCUMENT = String.format("""
             Загрузите документ excel в формате по шаблону:
             <pre>

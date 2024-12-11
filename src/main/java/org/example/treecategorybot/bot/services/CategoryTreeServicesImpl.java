@@ -68,11 +68,6 @@ public class CategoryTreeServicesImpl implements CategoriesTreeService {
     }
 
     @Override
-    public void getHelp() {
-
-    }
-
-    @Override
     public List<Category> getAllCategories() {
         return categoryRepository.findAll();
     }

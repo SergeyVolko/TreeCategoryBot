@@ -2,16 +2,18 @@ package org.example.treecategorybot.bot.repository;
 
 import org.example.treecategorybot.bot.entities.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
+/**
+ * Репозиторий для работы с сущностями {@link Category}.
+ *
+ * <p>
+ * Этот интерфейс расширяет {@link JpaRepository}, предоставляя стандартные методы для
+ * выполнения операций CRUD (создание, чтение, обновление, удаление) с сущностями
+ * {@link Category}. Он также включает метод для поиска категории по имени.
+ * </p>
+ */
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Long> {
     Category findCategoryByName(String name);
-    List<Category> findAllByParentIsNull();
-    @Query("SELECT c FROM Category c LEFT JOIN FETCH c.children WHERE c.parent IS NULL")
-    List<Category> getCategoriesWithChildren();
-
 }

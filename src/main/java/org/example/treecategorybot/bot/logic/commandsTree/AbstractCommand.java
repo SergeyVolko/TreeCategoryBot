@@ -84,14 +84,10 @@ public abstract class AbstractCommand implements Command {
      * @param childCommands набор дочерних команд. Может быть {@code null},
      *                     в противном случае не должен содержать {@code null} значений.
      * @throws IllegalArgumentException если {@code nameCommand} равен {@code null} или пустой строке.
-     * @throws NullPointerException если {@code childCommands} содержит {@code null} значения.
      */
     public AbstractCommand(String nameCommand, Set<String> childCommands) {
         if (nameCommand == null || nameCommand.isEmpty()) {
             throw new IllegalArgumentException("Имя команды не должно быть null или пустым.");
-        }
-        if (childCommands != null && childCommands.contains(null)) {
-            throw new NullPointerException("Набор дочерних команд не должен содержать null значений.");
         }
         this.nameCommand = nameCommand;
         this.childCommands = childCommands != null ? childCommands : Set.of();

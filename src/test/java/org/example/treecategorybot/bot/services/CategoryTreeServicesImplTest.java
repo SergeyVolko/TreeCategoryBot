@@ -1,20 +1,13 @@
 package org.example.treecategorybot.bot.services;
 
-import org.assertj.core.api.Assertions;
 import org.example.treecategorybot.bot.entities.Category;
 import org.example.treecategorybot.bot.repository.CategoryRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
-
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -59,6 +52,11 @@ class CategoryTreeServicesImplTest {
                 lemons, vegetables, leafy, spinach, salad, roots, carrot, beet
         );
         categoryTreeServicesImpl.saveAll(dataInput);
+    }
+
+    @AfterEach
+    public void deInit() {
+        categoryTreeServicesImpl.removeAll();
     }
 
     @Autowired
@@ -120,11 +118,6 @@ class CategoryTreeServicesImplTest {
         String actual = categoryTreeServicesImpl.viewTree();
         assertEquals(expected, actual);
     }
-
-    @Test
-    void getHelp() {
-    }
-
 
     @Test
     public void viewTreeCategories() {

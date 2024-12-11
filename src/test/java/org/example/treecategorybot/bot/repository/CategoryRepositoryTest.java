@@ -5,11 +5,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.transaction.annotation.Transactional;
-
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -130,12 +126,8 @@ class CategoryRepositoryTest {
         Category e = new Category("eeee", c);
         List<Category> dataInput = List.of(a, b, c, d, e);
         categoryRepository.saveAll(dataInput);
-        //c = categoryRepository.findCategoryByName("cccc");
-        //c.setParent(null);
-        //a.getChildren().remove(c);
-        //categoryRepository.save(c);
         categoryRepository.delete(c);
-        List<Category> expected = Stream.of(a, b, c, d, e)
+        List<Category> expected = Stream.of(b, d)
                 .peek(category -> category.setChildren(null))
                 .toList();
         List<Category> result = categoryRepository.findAll().stream()

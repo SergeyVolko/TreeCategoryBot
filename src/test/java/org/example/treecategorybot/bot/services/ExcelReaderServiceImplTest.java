@@ -5,10 +5,8 @@ import org.example.treecategorybot.bot.logic.exceptions.DownloadDocumentExceptio
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
 import java.io.*;
 import java.util.List;
-
 import static org.example.treecategorybot.bot.logic.constants.ExceptionsTextMessages.*;
 import static org.junit.jupiter.api.Assertions.*;
 

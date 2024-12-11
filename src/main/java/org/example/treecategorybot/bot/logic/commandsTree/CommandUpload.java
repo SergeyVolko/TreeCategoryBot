@@ -21,7 +21,8 @@ public class CommandUpload extends AbstractCommand{
     private final ExcelGenerator excelGenerator;
     private static Set<String> childCommands = Set.of(
             DEFAULT_DOCUMENT,
-            EXIT_UPLOAD
+            EXIT_UPLOAD,
+            START
     );
 
     public CommandUpload(ExcelGenerator excelGenerator) {

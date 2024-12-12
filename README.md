@@ -1,4 +1,3 @@
-_# Java Intern Developer
 ## Разработка Telegram-бота для управления деревом категорий на базе Spring Boot и PostgreSQL
 ### Ссылка на документацию бота:[Документация](https://sergeyvolko.github.io/TreeCategoryBot/)
 **Цель:** Создать Telegram-бота, который позволит пользователям
